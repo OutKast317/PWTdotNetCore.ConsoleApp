@@ -195,7 +195,7 @@ namespace PWTdotNetCore.ConsoleApp
 
             SqlCommand cmd = new SqlCommand(query, connection);
 
-            cmd.Parameters.AddWithValue("id", id);
+            cmd.Parameters.AddWithValue("@Blogid", id);
             cmd.Parameters.AddWithValue("@BlogTitle", title);
             cmd.Parameters.AddWithValue("@BlogAuthor", author);
             cmd.Parameters.AddWithValue("@BlogContent", content);
@@ -207,6 +207,29 @@ namespace PWTdotNetCore.ConsoleApp
             Console.WriteLine(result == 1 ? "Successfully updated." : "Update failed.");
 
            
+        }
+
+        public void Delete()
+        {
+            Console.WriteLine("Enter BlogId to delete: ");
+            string id = Console.ReadLine();
+
+            SqlConnection connection = new SqlConnection(_connectionString);
+            connection.open();
+
+            string query = @"DELETE FROM [dbo].[Tbl_Blog]
+      WHERE BlogId = @BlogId";
+
+            SqlCommand cmd = new SqlCommand(query, connection);
+
+            cmd.Parameters.AddWithValue("@Blogid", id);
+
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            Console.WriteLine(result == 1 ? "Successfully deleted." : "Delete failed.");
+
         }
     }
 }
